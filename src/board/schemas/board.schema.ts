@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { Post } from './post.schema';
+// import { Organization }
 
 export type BoardDocument = HydratedDocument<Board>;
 
@@ -11,10 +12,10 @@ export class Board {
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Organization', // Organization schema must be implemented
+    ref: 'Organization',
     required: false,
   })
-  admin: string; // later change to Organization
+  admin: Organization; // Organization schema must be implemented
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
