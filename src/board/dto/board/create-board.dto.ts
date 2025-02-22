@@ -1,16 +1,17 @@
-import { IsMongoId, IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsMongoId, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateBoardDto {
   @IsString()
   @IsNotEmpty()
-  name: string;
+  readonly name: string;
 
   @IsMongoId()
-  admin: string;
+  readonly admin: string;
 
   @IsMongoId()
-  reader: string;
+  readonly reader: string;
 
+  @IsArray()
   @IsMongoId({ each: true })
-  posts: string[];
+  readonly posts: string[];
 }
