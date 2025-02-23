@@ -20,7 +20,7 @@ export class Post {
   @Prop({ type: String, required: true })
   title: string;
 
-  @Prop({ type: Date, required: true })
+  @Prop({ type: Date, required: true, default: Date.now }) // use the server's time
   createdAt: Date;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })

@@ -12,9 +12,7 @@ export class CreatePostDto {
   @IsNotEmpty()
   readonly title: string;
 
-  // @IsDate()
-  // @IsNotEmpty()
-  // readonly createdAt: Date;
+  // no createdAt prop in the dto because it will be set by the server
 
   @IsMongoId()
   @IsNotEmpty()
@@ -30,4 +28,5 @@ export class CreatePostDto {
 
   // @IsNumber()
   // readonly likes: number;
+  // 페이스북처럼 리액션처럼 하거나 그냥 좋아요만 할 수 있거나
 }
