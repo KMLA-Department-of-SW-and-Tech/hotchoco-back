@@ -3,7 +3,7 @@ import mongoose, { HydratedDocument } from 'mongoose';
 import { Comment } from './comment.schema';
 // import { User }
 
-export enum ReactionTypes {
+export enum Reaction {
   LIKE = 'like',
   LOVE = 'love',
   CARE = 'care',
@@ -20,7 +20,7 @@ export class Post {
   @Prop({ type: String, required: true })
   title: string;
 
-  @Prop({ type: Date, required: true })
+  @Prop({ type: Date, required: true, default: Date.now }) // use the server's time
   createdAt: Date;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
@@ -29,8 +29,8 @@ export class Post {
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }] })
   comments: Comment[];
 
-  @Prop({ type: [String], enum: ReactionTypes })
-  reactions: ReactionTypes[];
+  @Prop({ type: [String], enum: Reaction })
+  reactions: Reaction[];
 
   // @Prop()
   // likes: number;
