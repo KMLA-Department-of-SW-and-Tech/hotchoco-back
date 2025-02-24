@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { Comment } from './comment.schema';
-// import { User }
+import { User } from 'src/user/schemas/user.schema';
 
 export enum Reaction {
   LIKE = 'like',
@@ -24,7 +24,7 @@ export class Post {
   createdAt: Date;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
-  author: User; // User schema must be implemented
+  author: User;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }] })
   comments: Comment[];

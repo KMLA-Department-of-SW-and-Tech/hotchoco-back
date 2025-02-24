@@ -7,7 +7,11 @@ import { BoardModule } from './board/board.module';
 import { initializeFirebase } from './firebase.config';
 
 @Module({
-  imports: [MongooseModule.forRoot('mongodb://localhost/nest'), UserModule, BoardModule],
+  imports: [
+    MongooseModule.forRoot('mongodb://localhost/nest'),
+    UserModule,
+    BoardModule,
+  ],
 
   controllers: [AppController],
   providers: [AppService],
