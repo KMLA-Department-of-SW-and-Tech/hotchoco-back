@@ -1,22 +1,12 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument } from 'mongoose';
-import { User } from './user.schema';
+import { z } from 'zod';
+import { UserSchema } from './user.schema';
 
-export type OrgsDocument = HydratedDocument<Orgs>;
+const OrgsSchema = z.object({
+  name: z.string(),
+  manager: z.array(UserSchema),
+  description: z.string(),
+});
 
-@Schema()
-export class Orgs {
-  @Prop({ required: true })
-  name: string;
+type Orgs = z.infer<typeof OrgsSchema>;
 
-  @Prop({
-    required: true,
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  })
-  manager: User[];
-
-  @Prop({ required: true })
-  description: string;
-}
-
-export const OrgsSchema = SchemaFactory.createForClass(Orgs);
+export { OrgsSchema, Orgs };

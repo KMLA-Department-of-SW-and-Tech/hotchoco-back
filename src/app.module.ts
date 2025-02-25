@@ -5,11 +5,13 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { BoardModule } from './board/board.module';
 import { initializeFirebase } from './firebase.config';
+import { FirestoreModule } from './firestore/firestore.module';
 
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost/nest'),
     UserModule,
+    FirestoreModule,
     BoardModule,
   ],
 
