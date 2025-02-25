@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsDate,
   IsEmail,
   IsEnum,
@@ -46,15 +47,16 @@ export class CreateUserDto {
   @IsString()
   readonly description: string;
 
-  @IsUrl()
+  @IsUrl() // firebase storage에서 어떻게 처리하냐에 따라 다르다면서 정욱이가 주석 남기랬어요요
   readonly profile_picture: string;
 
+  @IsArray()
   @IsMongoId({ each: true })
   readonly orgs: string[];
 
   @IsString()
   readonly major: string;
 
-  @IsUrl()
+  @IsUrl() // firebase storage에서 어떻게 처리하냐에 따라 다르다면서 정욱이가 주석 남기랬어요요
   readonly instagram_handle: string;
 }
