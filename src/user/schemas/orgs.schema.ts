@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { UserSchema } from './user.schema';
 
 const OrgsSchema = z.object({
-  name: z.string(),
-  manager: z.array(UserSchema),
+  name: z.string().nonempty(), // unique
+  manager: z.array(z.string().nonempty()), // Reference to user uid
+  members: z.array(z.string().nonempty()), // Reference to user uid
   description: z.string(),
 });
 
