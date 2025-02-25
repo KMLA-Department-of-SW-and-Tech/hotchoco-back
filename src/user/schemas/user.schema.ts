@@ -1,55 +1,19 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument } from 'mongoose';
-import { Orgs } from './orgs.schema';
+import { z } from 'zod';
 
-export type UserDocument = HydratedDocument<User>;
+export const UserSchema = z.object({
+  uid: z.string(),
+  email: z.string().email(),
+  wave: z.number(),
+  student_number: z.number(),
+  type: z.enum(['foreigner', 'student', 'graduate']),
+  birth_date: z.date(),
+  phone: z.string().optional(),
+  name: z.string(),
+  description: z.string().optional(),
+  profile_picture: z.string().optional(),
+  orgs: z.array(z.string()).optional(), // Reference to orgs name
+  major: z.string().optional(),
+  instagram_handle: z.string().optional(),
+});
 
-export enum UserTypes {
-  foreigner,
-  student,
-  graduate,
-}
-
-@Schema()
-export class User {
-  @Prop({ required: true })
-  uid: string;
-
-  @Prop({ required: true })
-  email: string;
-
-  @Prop({ required: true })
-  wave: number;
-
-  @Prop({ required: true })
-  student_number: number;
-
-  @Prop({ required: true, enum: UserTypes })
-  type: UserTypes;
-
-  @Prop({ required: true })
-  birth_date: Date;
-
-  @Prop()
-  phone: string;
-
-  @Prop({ required: true })
-  name: string; // ABC 포함
-
-  @Prop()
-  description: string;
-
-  @Prop()
-  profile_picture: string;
-
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Orgs' }] })
-  orgs: Orgs[];
-
-  @Prop()
-  major: string;
-
-  @Prop()
-  instagram_handle: string;
-}
-
-export const UserSchema = SchemaFactory.createForClass(User);
+export type User = z.infer<typeof UserSchema>;
