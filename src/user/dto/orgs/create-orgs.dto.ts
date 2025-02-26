@@ -1,4 +1,4 @@
-import { IsArray, IsMongoId, IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateOrgsDto {
   @IsString()
@@ -6,11 +6,10 @@ export class CreateOrgsDto {
   readonly name: string;
 
   @IsArray()
-  @IsMongoId({ each: true })
+  @IsString({ each: true })
   @IsNotEmpty()
   readonly manager: string[];
 
   @IsString()
-  @IsNotEmpty()
   readonly description: string;
 }
