@@ -3,7 +3,6 @@ import {
   IsDate,
   IsEmail,
   IsEnum,
-  IsMongoId,
   IsNotEmpty,
   IsNumber,
   IsPhoneNumber,
@@ -51,7 +50,7 @@ export class CreateUserDto {
   readonly profile_picture: string;
 
   @IsArray()
-  @IsMongoId({ each: true })
+  @IsString({ each: true })
   readonly orgs: string[];
 
   @IsString()
