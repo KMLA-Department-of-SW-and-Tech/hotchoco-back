@@ -1,40 +1,15 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument } from 'mongoose';
-import { Comment } from './comment.schema';
-import { User } from 'src/user/schemas/user.schema';
+import { z } from 'zod';
 
-export enum Reaction {
-  LIKE = 'like',
-  LOVE = 'love',
-  CARE = 'care',
-  HAHA = 'haha',
-  WOW = 'wow',
-  SAD = 'sad',
-  ANGRY = 'angry',
-}
+export const PostSchema = z.object({
+  id: z.string().nonempty(), // Unique
+  author: z.string().nonempty(), // Reference to user uid
+  title: z.string(), // if empty, it's a comment
+  content: z.string().nonempty(),
+  createdAt: z.date().default(() => new Date()),
+  comments: z.array(z.string().nonempty()), // Reference to comment(post) id
+  reactions: z.array(
+    z.enum(['like', 'love', 'care', 'haha', 'wow', 'sad', 'angry']),
+  ),
+});
 
-export type PostDocument = HydratedDocument<Post>;
-
-@Schema()
-export class Post {
-  @Prop({ type: String, required: true })
-  title: string;
-
-  @Prop({ type: Date, required: true, default: Date.now }) // use the server's time
-  createdAt: Date;
-
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
-  author: User;
-
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }] })
-  comments: Comment[];
-
-  @Prop({ type: [String], enum: Reaction })
-  reactions: Reaction[];
-
-  // @Prop()
-  // likes: number;
-  // 페이스북처럼 리액션처럼 하거나 그냥 좋아요만 할 수 있거나
-}
-
-export const PostSchema = SchemaFactory.createForClass(Post);
+export type Post = z.infer<typeof PostSchema>;
