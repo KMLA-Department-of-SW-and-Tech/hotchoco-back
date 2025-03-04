@@ -1,32 +1,25 @@
-import {
-  IsArray,
-  IsEnum,
-  IsMongoId,
-  IsNotEmpty,
-  IsString,
-} from 'class-validator';
-import { Reaction } from 'src/board/schemas/post.schema';
+import { IsArray, IsNotEmpty, IsString, IsBoolean } from 'class-validator';
 
 export class CreatePostDto {
+  // no createdAt, id prop in the dto because it will be set by the server
+
+  @IsBoolean()
+  @IsNotEmpty()
+  readonly isAnonymous: boolean;
+
   @IsString()
   @IsNotEmpty()
   readonly title: string;
 
-  // no createdAt prop in the dto because it will be set by the server
-
-  @IsMongoId()
+  @IsString()
   @IsNotEmpty()
-  readonly author: string;
+  readonly content: string;
 
   @IsArray()
-  @IsMongoId({ each: true })
-  readonly comments: string[];
+  @IsString({ each: true })
+  readonly images: string[];
 
   @IsArray()
-  @IsEnum(Reaction, { each: true })
-  readonly reactions: Reaction[];
-
-  // @IsNumber()
-  // readonly likes: number;
-  // 페이스북처럼 리액션처럼 하거나 그냥 좋아요만 할 수 있거나
+  @IsString({ each: true })
+  readonly files: string[];
 }

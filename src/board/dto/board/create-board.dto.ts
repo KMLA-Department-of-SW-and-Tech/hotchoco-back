@@ -1,17 +1,18 @@
-import { IsArray, IsMongoId, IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateBoardDto {
   @IsString()
   @IsNotEmpty()
-  readonly name: string;
+  readonly name: string; // TODO: 같은 값이 존재하는가 체크하는 데코레이터 필요
 
-  @IsMongoId()
-  readonly admin: string;
-
-  @IsMongoId()
-  readonly reader: string;
+  @IsString()
+  readonly description: string;
 
   @IsArray()
-  @IsMongoId({ each: true })
-  readonly posts: string[];
+  @IsString({ each: true })
+  readonly admin: string[]; // TODO: Check admin is a valid uid
+
+  @IsArray()
+  @IsString({ each: true })
+  readonly reader: string[];
 }

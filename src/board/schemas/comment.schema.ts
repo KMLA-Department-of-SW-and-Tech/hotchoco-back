@@ -1,17 +1,15 @@
 import { z } from 'zod';
 import { ReactionSchema } from './reaction.schema';
-import { BoardSchema } from './board.schema';
+import { PostSchema } from './post.schema';
 
-export const PostSchema = z.object({
+export const CommentSchema = z.object({
   id: z.string().uuid(), // Unique
-  boardId: BoardSchema.shape.id,
+  postId: PostSchema.shape.id,
+  parentId: z.lazy((): z.ZodString => CommentSchema.shape.id).nullable(),
   author: z.string().nonempty(), // Reference to user uid. Anonymous user will have a unique id - Anonymous
-  title: z.string(), // if empty, it's a comment
   content: z.string().nonempty(),
-  images: z.array(z.string()), // Reference to image id
-  files: z.array(z.string()), // Reference to file id
   createdAt: z.date().default(() => new Date()),
   reactions: ReactionSchema,
 });
 
-export type Post = z.infer<typeof PostSchema>;
+export type Comment = z.infer<typeof CommentSchema>;
