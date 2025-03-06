@@ -10,6 +10,8 @@ import { Request } from 'express';
 interface CustomRequest extends Request {
   user: DecodedIdToken;
 }
+
+// Controller guard to validate auth
 @Injectable()
 export class FirebaseAuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -29,7 +31,7 @@ export class FirebaseAuthGuard implements CanActivate {
     }
   }
 
-  private extractTokenFromHeader(request: Request): string | null {
+  private extractTokenFromHeader(request: CustomRequest): string | null {
     const authHeader = request.headers['authorization'];
     if (!authHeader) {
       return null;
