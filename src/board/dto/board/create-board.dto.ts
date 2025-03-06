@@ -1,4 +1,5 @@
 import { IsArray, IsNotEmpty, IsString } from 'class-validator';
+import { IsValidUid } from '../../../common/decorators/is-valid-uid.decorator';
 
 export class CreateBoardDto {
   @IsString()
@@ -10,9 +11,11 @@ export class CreateBoardDto {
 
   @IsArray()
   @IsString({ each: true })
+  @IsValidUid({ each: true })
   readonly admin: string[]; // TODO: Check admin is a valid uid
 
   @IsArray()
   @IsString({ each: true })
+  @IsValidUid({ each: true })
   readonly reader: string[];
 }

@@ -1,16 +1,19 @@
-// firebase-auth.guard.ts
 import {
   Injectable,
   CanActivate,
   ExecutionContext,
   UnauthorizedException,
 } from '@nestjs/common';
-import * as admin from 'firebase-admin';
+import { DecodedIdToken, getAuth } from 'firebase-admin/auth';
+import { Request } from 'express';
 
+interface CustomRequest extends Request {
+  user: DecodedIdToken;
+}
 @Injectable()
 export class FirebaseAuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
+    const request = context.switchToHttp().getRequest<CustomRequest>();
     const token = this.extractTokenFromHeader(request);
 
     if (!token) {
@@ -18,7 +21,7 @@ export class FirebaseAuthGuard implements CanActivate {
     }
 
     try {
-      const decodedToken = await admin.auth().verifyIdToken(token);
+      const decodedToken = await getAuth().verifyIdToken(token);
       request.user = decodedToken;
       return true;
     } catch {
@@ -26,7 +29,7 @@ export class FirebaseAuthGuard implements CanActivate {
     }
   }
 
-  private extractTokenFromHeader(request: any): string | null {
+  private extractTokenFromHeader(request: Request): string | null {
     const authHeader = request.headers['authorization'];
     if (!authHeader) {
       return null;

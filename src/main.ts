@@ -2,26 +2,36 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
-  const config = new DocumentBuilder()
-    .setTitle('NestJS API')
-    .setDescription('API description')
-    .setVersion('1.0')
-    .addTag('API')
-    .build();
-  const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, documentFactory);
+  const configService = app.get(ConfigService);
 
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
-      forbidNonWhitelisted: true,
       transform: true,
     }),
   );
-  await app.listen(process.env.PORT ?? 3000);
+
+  app.useGlobalFilters(new HttpExceptionFilter());
+
+  const config = new DocumentBuilder()
+    .setTitle('HotChoco API')
+    .setDescription('The HotChoco API description')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
+
+  const port = configService.get<number>('app.port', 3000);
+  await app.listen(port);
+  console.log(`Application is running on: http://localhost:${port}`);
 }
-bootstrap();
+bootstrap().catch((error) => {
+  console.error('Error during bootstrap:', error);
+});
