@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import { BoardSchema } from './board.schema';
-import { GroupSchema } from 'src/user/schemas/group.schema';
+import { GroupSchema } from '../../group/schemas/group.schema';
 
-const BoardGroupSchema = z.object({
+export const BoardGroupSchema = z.object({
   boardId: BoardSchema.shape.id,
   groupId: GroupSchema.shape.id,
   role: z.enum(['user', 'manager']),

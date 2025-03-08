@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { UserSchema } from './user.schema';
+import { UserSchema } from '../../user/schemas/user.schema';
 import { GroupSchema } from './group.schema';
 
 export const UserGroupSchema = z.object({
