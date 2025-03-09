@@ -9,6 +9,7 @@ export const UserSchema = z.object({
   birth_date: z.date(),
   phone: z.number().optional(), // Phone number (without "-" or " ")
   name: z.string().nonempty(),
+  isManager: z.boolean().optional(),
 });
 
 export type User = z.infer<typeof UserSchema>;
