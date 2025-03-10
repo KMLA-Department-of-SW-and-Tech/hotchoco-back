@@ -1,7 +1,7 @@
 import { IsUUID, IsEnum } from 'class-validator';
 
 export class AddUserDto {
-  @IsUUID()
+  @IsString()
   uid: string;
 
   @IsEnum(['member', 'admin'])
