@@ -42,6 +42,7 @@ export default tseslint.config(
       ],
       '@typescript-eslint/unbound-method': 'off',
       'jest/unbound-method': 'error',
+      'prettier/prettier': 'warn',
     },
   },
 );

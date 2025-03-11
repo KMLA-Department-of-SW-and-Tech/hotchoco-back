@@ -1,4 +1,4 @@
-import { IsUUID, IsEnum } from 'class-validator';
+import { IsString, IsEnum } from 'class-validator';
 
 export class AddUserDto {
   @IsString()

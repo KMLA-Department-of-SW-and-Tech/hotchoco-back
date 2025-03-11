@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { GroupService } from './group.service';
-import { FirebaseAuthGuard } from 'src/common/guards/firebase-auth.guard'; // FIXED IMPORT PATH
+import { FirebaseAuthGuard } from '../common/guards/firebase-auth.guard'; // FIXED IMPORT PATH
 import { CreateGroupDto } from './dto/create-group.dto';
 import { AddUserDto } from './dto/add-user.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
@@ -22,25 +22,25 @@ export class GroupController {
   constructor(private readonly groupService: GroupService) {}
 
   @Post()
-  createGroup(@Body() createGroupDto: CreateGroupDto) {
+  createGroup(@Body() _createGroupDto: CreateGroupDto) {
     return true; //this.groupService.createGroup(createGroupDto);
   }
 
   @Post(':groupId/users')
   addUserToGroup(
-    @Param('groupId') groupId: string,
-    @Body() addUserDto: AddUserDto,
+    @Param('groupId') _groupId: string,
+    @Body() _addUserDto: AddUserDto,
   ) {
     return true; // this.groupService.addUserToGroup(groupId, addUserDto);
   }
 
   @Get(':groupId')
-  getGroup(@Param('groupId') groupId: string) {
+  getGroup(@Param('groupId') _groupId: string) {
     return true; // this.groupService.getGroup(groupId);
   }
 
   @Get(':groupId/users')
-  getGroupUsers(@Param('groupId') groupId: string) {
+  getGroupUsers(@Param('groupId') _groupId: string) {
     return true; // this.groupService.getGroupUsers(groupId);
   }
 
@@ -51,17 +51,17 @@ export class GroupController {
 
   @Patch(':groupId')
   updateGroup(
-    @Param('groupId') groupId: string,
-    @Body() updateGroupDto: UpdateGroupDto,
+    @Param('groupId') _groupId: string,
+    @Body() _updateGroupDto: UpdateGroupDto,
   ) {
     return true; // this.groupService.updateGroup(groupId, updateGroupDto);
   }
 
   @Patch(':groupId/users/:userId/permissions')
   updateUserPermissions(
-    @Param('groupId') groupId: string,
-    @Param('userId') userId: string,
-    @Body() permissionsDto: UpdateUserPermissionsDto,
+    @Param('groupId') _groupId: string,
+    @Param('userId') _userId: string,
+    @Body() _permissionsDto: UpdateUserPermissionsDto,
   ) {
     return true; /* this.groupService.updateUserPermissions(
       groupId,
@@ -73,22 +73,22 @@ export class GroupController {
 
   @Patch(':groupId/users/:userId/status')
   updateUserStatus(
-    @Param('groupId') groupId: string,
-    @Param('userId') userId: string,
-    @Body() statusDto: UpdateUserStatusDto,
+    @Param('groupId') _groupId: string,
+    @Param('userId') _userId: string,
+    @Body() _statusDto: UpdateUserStatusDto,
   ) {
     return true; // this.groupService.updateUserStatus(groupId, userId, statusDto);
   }
 
   @Delete(':groupId')
-  deleteGroup(@Param('groupId') groupId: string) {
+  deleteGroup(@Param('groupId') _groupId: string) {
     return true; // this.groupService.deleteGroup(groupId);
   }
 
   @Delete(':groupId/users/:userId')
   removeUserFromGroup(
-    @Param('groupId') groupId: string,
-    @Param('userId') userId: string,
+    @Param('groupId') _groupId: string,
+    @Param('userId') _userId: string,
   ) {
     return true; // this.groupService.removeUserFromGroup(groupId, userId);
   }
