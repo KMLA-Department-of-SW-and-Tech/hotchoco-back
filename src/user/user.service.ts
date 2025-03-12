@@ -7,7 +7,9 @@ import { User, UserSchema } from './schemas/user.schema';
 @Injectable()
 export class UserService {
   private readonly userCollection = 'users';
-  private readonly firestore = getFirestore();
+  private get firestore() {
+    return getFirestore();
+  }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     const userData = UserSchema.parse(createUserDto);
