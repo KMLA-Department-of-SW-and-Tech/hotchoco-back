@@ -37,3 +37,9 @@ FIREBASE_CLIENT_EMAIL=your-client-email
 npm install
 npm run start:dev
 ```
+
+## Project Documentation
+
+프로젝트와 관련된 문서들은 `docs` 디렉토리에서 찾을 수 있습니다:
+
+- [Firebase 모범 사례 가이드](docs/firebase-best-practices.md) - Firebase 초기화 및 서비스 사용에 대한 권장 사항
