@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from './user.service';
 import { getFirestore } from 'firebase-admin/firestore';
-import { NotFoundException } from '@nestjs/common';
+import { NotFoundException, ForbiddenException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -103,7 +103,7 @@ describe('UserService', () => {
   });
 
   describe('update', () => {
-    it('사용자 정보를 업데이트하고 업데이트된 데이터를 반환해야 함', async () => {
+    it('자신의 정보를 업데이트하고 업데이트된 데이터를 반환해야 함', async () => {
       const updateUserDto: UpdateUserDto = {
         name: 'Updated Name',
       };
@@ -119,7 +119,11 @@ describe('UserService', () => {
 
       mockUpdate.mockResolvedValueOnce(undefined);
 
-      const result = await service.update(mockUser.uid, updateUserDto);
+      const result = await service.update(
+        mockUser.uid,
+        updateUserDto,
+        mockUser.uid,
+      );
 
       expect(mockCollection).toHaveBeenCalledWith('users');
       expect(mockDoc).toHaveBeenCalledWith(mockUser.uid);
@@ -130,30 +134,59 @@ describe('UserService', () => {
       });
     });
 
+    it('다른 사용자의 정보를 수정하려 할 때 ForbiddenException을 던져야 함', async () => {
+      const updateUserDto: UpdateUserDto = {
+        name: 'Updated Name',
+      };
+
+      const mockUserData = {
+        ...mockUser,
+      };
+
+      mockGet.mockResolvedValueOnce({
+        exists: true,
+        data: () => mockUserData,
+      });
+
+      await expect(
+        service.update(mockUser.uid, updateUserDto, 'other-uid'),
+      ).rejects.toThrow(ForbiddenException);
+    });
+
     it('존재하지 않는 사용자를 업데이트할 때 NotFoundException을 던져야 함', async () => {
       mockGet.mockResolvedValueOnce({
         exists: false,
       });
 
       await expect(
-        service.update('non-existent-uid', { name: 'New Name' }),
+        service.update('non-existent-uid', { name: 'New Name' }, mockUser.uid),
       ).rejects.toThrow(NotFoundException);
     });
   });
 
   describe('remove', () => {
-    it('존재하는 사용자를 삭제해야 함', async () => {
+    it('자신의 정보를 삭제해야 함', async () => {
       mockGet.mockResolvedValueOnce({
         exists: true,
       });
 
       mockDelete.mockResolvedValueOnce(undefined);
 
-      await service.remove(mockUser.uid);
+      await service.remove(mockUser.uid, mockUser.uid);
 
       expect(mockCollection).toHaveBeenCalledWith('users');
       expect(mockDoc).toHaveBeenCalledWith(mockUser.uid);
       expect(mockDelete).toHaveBeenCalled();
+    });
+
+    it('다른 사용자의 정보를 삭제하려 할 때 ForbiddenException을 던져야 함', async () => {
+      mockGet.mockResolvedValueOnce({
+        exists: true,
+      });
+
+      await expect(service.remove(mockUser.uid, 'other-uid')).rejects.toThrow(
+        ForbiddenException,
+      );
     });
 
     it('존재하지 않는 사용자를 삭제할 때 NotFoundException을 던져야 함', async () => {
@@ -161,9 +194,9 @@ describe('UserService', () => {
         exists: false,
       });
 
-      await expect(service.remove('non-existent-uid')).rejects.toThrow(
-        NotFoundException,
-      );
+      await expect(
+        service.remove('non-existent-uid', mockUser.uid),
+      ).rejects.toThrow(NotFoundException);
     });
   });
 });

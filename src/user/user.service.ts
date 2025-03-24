@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { getFirestore } from 'firebase-admin/firestore';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -42,12 +46,20 @@ export class UserService {
     return UserSchema.parse(userData);
   }
 
-  async update(uid: string, updateUserDto: UpdateUserDto): Promise<User> {
+  async update(
+    uid: string,
+    updateUserDto: UpdateUserDto,
+    requestUid: string,
+  ): Promise<User> {
     const userRef = this.firestore.collection(this.userCollection).doc(uid);
     const userDoc = await userRef.get();
 
     if (!userDoc.exists) {
       throw new NotFoundException(`User with UID ${uid} not found`);
+    }
+
+    if (uid !== requestUid) {
+      throw new ForbiddenException('자신의 정보만 수정할 수 있습니다.');
     }
 
     const currentData = userDoc.data() as User;
@@ -63,12 +75,16 @@ export class UserService {
     return validatedData;
   }
 
-  async remove(uid: string): Promise<void> {
+  async remove(uid: string, requestUid: string): Promise<void> {
     const userRef = this.firestore.collection(this.userCollection).doc(uid);
     const userDoc = await userRef.get();
 
     if (!userDoc.exists) {
       throw new NotFoundException(`User with UID ${uid} not found`);
+    }
+
+    if (uid !== requestUid) {
+      throw new ForbiddenException('자신의 정보만 삭제할 수 있습니다.');
     }
 
     await userRef.delete();
