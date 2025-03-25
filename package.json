@@ -21,12 +21,12 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@nestjs/common": "^11.0.10",
+    "@nestjs/common": "^11.0.12",
     "@nestjs/config": "^4.0.1",
-    "@nestjs/core": "^11.0.10",
+    "@nestjs/core": "^11.0.12",
     "@nestjs/mapped-types": "^2.1.0",
-    "@nestjs/platform-express": "^11.0.10",
-    "@nestjs/swagger": "^11.0.5",
+    "@nestjs/platform-express": "^11.0.12",
+    "@nestjs/swagger": "^11.1.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "firebase-admin": "^13.1.0",
@@ -35,9 +35,9 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@nestjs/cli": "^11.0.4",
-    "@nestjs/schematics": "^11.0.1",
-    "@nestjs/testing": "^11.0.10",
+    "@nestjs/cli": "^11.0.5",
+    "@nestjs/schematics": "^11.0.2",
+    "@nestjs/testing": "^11.0.12",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.2",
     "@types/node": "^22.13.9",
