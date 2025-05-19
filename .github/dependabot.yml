@@ -1,22 +1,22 @@
 version: 2
 updates:
   # Keep bundler dependencies up to date
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "wednesday"
-      time: "01:00"
-      timezone: "Asia/Seoul"
+      interval: 'weekly'
+      day: 'wednesday'
+      time: '01:00'
+      timezone: 'Asia/Seoul'
     groups:
-      production-dependencies:
-        dependency-type: "production"
+      prod-deps:
+        dependency-type: 'production'
         exclude-patterns:
-          - "@nestjs/*"
-      development-dependencies:
-        dependency-type: "development"
+          - '@nestjs/*'
+      dev-deps:
+        dependency-type: 'development'
         exclude-patterns:
-          - "@nestjs/*"
+          - '@nestjs/*'
       nestjs:
         patterns:
-          - "@nestjs/*"
+          - '@nestjs/*'
