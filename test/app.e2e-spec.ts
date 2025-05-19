@@ -1,7 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
+import request from 'supertest';
 import { AppModule } from './../src/app.module';
+import { FirebaseAuthGuard } from 'src/common/guards/firebase-auth.guard';
+import { MockFirebaseAuthGuard } from './mocks/mock-firebase-auth.guard';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -9,7 +11,10 @@ describe('AppController (e2e)', () => {
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideGuard(FirebaseAuthGuard)
+      .useClass(MockFirebaseAuthGuard)
+      .compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
