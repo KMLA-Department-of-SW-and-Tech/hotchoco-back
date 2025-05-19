@@ -8,10 +8,14 @@ import {
   Post,
 } from '@nestjs/common';
 import { UserService } from './user.service';
+import { FirebaseAuthGuard } from '../common/guards/firebase-auth.guard';
+import { UseGuards } from '@nestjs/common/decorators';
+import { User } from '../common/decorators/user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { UserDto } from './dto/user.dto';
+import { DecodedIdToken } from 'firebase-admin/auth';
 
 @ApiTags('유저')
 @Controller('user')
@@ -77,15 +81,11 @@ export class UserController {
     return this.userService.findOne(uid);
   }
 
+  @UseGuards(FirebaseAuthGuard)
   @Patch(':uid')
   @ApiOperation({
     summary: '유저 정보 수정',
     description: '특정 유저의 정보를 수정합니다.',
-  })
-  @ApiParam({
-    name: 'uid',
-    required: true,
-    description: '유저의 고유 식별자',
   })
   @ApiResponse({
     status: 200,
@@ -106,19 +106,15 @@ export class UserController {
     status: 500,
     description: '서버 오류가 발생했습니다. (Internal Server Error)',
   })
-  update(@Param('uid') uid: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(uid, updateUserDto);
+  update(@User() user: DecodedIdToken, @Body() updateUserDto: UpdateUserDto) {
+    return this.userService.update(user.uid, updateUserDto);
   }
 
+  @UseGuards(FirebaseAuthGuard)
   @Delete(':uid')
   @ApiOperation({
     summary: '유저 삭제',
     description: '특정 유저를 삭제합니다.',
-  })
-  @ApiParam({
-    name: 'uid',
-    required: true,
-    description: '유저의 고유 식별자',
   })
   @ApiResponse({
     status: 200,
@@ -137,7 +133,7 @@ export class UserController {
     status: 500,
     description: '서버 오류가 발생했습니다. (Internal Server Error)',
   })
-  remove(@Param('uid') uid: string) {
-    return this.userService.remove(uid);
+  remove(@User() user: DecodedIdToken) {
+    return this.userService.remove(user.uid);
   }
 }
