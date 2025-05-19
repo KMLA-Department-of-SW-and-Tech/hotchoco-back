@@ -1,11 +1,15 @@
-import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsUUID } from 'class-validator';
 
 export class CreateGroupDto {
+  @IsString()
+  @IsUUID()
+  uid: string;
+
   @IsString()
   @IsNotEmpty()
   name: string;
 
   @IsString()
-  @IsOptional()
-  description?: string;
+  @IsNotEmpty()
+  description: string;
 }
