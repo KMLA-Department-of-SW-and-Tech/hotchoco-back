@@ -1,15 +1,13 @@
 import {
-  Controller,
-  Post,
-  Get,
-  Patch,
-  Delete,
-  Param,
   Body,
-  UseGuards,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
 import { GroupService } from './group.service';
-import { FirebaseAuthGuard } from '../common/guards/firebase-auth.guard'; // FIXED IMPORT PATH
 import { CreateGroupDto } from './dto/create-group.dto';
 import { AddUserDto } from './dto/add-user.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
@@ -17,79 +15,81 @@ import { UpdateUserPermissionsDto } from './dto/update-user-permissions.dto';
 import { UpdateUserStatusDto } from './dto/update-user-status.dto';
 
 @Controller('group')
-@UseGuards(FirebaseAuthGuard)
 export class GroupController {
   constructor(private readonly groupService: GroupService) {}
 
   @Post()
-  createGroup(@Body() _createGroupDto: CreateGroupDto) {
-    return true; //this.groupService.createGroup(createGroupDto);
+  createGroup(@Body() createGroupDto: CreateGroupDto) {
+    return this.groupService.createGroup(createGroupDto);
   }
 
   @Post(':groupId/users')
   addUserToGroup(
-    @Param('groupId') _groupId: string,
-    @Body() _addUserDto: AddUserDto,
+    @Param('groupId') groupId: string,
+    @Body() addUserDto: AddUserDto,
   ) {
-    return true; // this.groupService.addUserToGroup(groupId, addUserDto);
+    return this.groupService.addUserToGroup(groupId, addUserDto);
   }
 
   @Get(':groupId')
-  getGroup(@Param('groupId') _groupId: string) {
-    return true; // this.groupService.getGroup(groupId);
+  getGroup(@Param('groupId') groupId: string) {
+    return this.groupService.getGroup(groupId);
   }
 
   @Get(':groupId/users')
-  getGroupUsers(@Param('groupId') _groupId: string) {
-    return true; // this.groupService.getGroupUsers(groupId);
+  getGroupUsers(@Param('groupId') groupId: string) {
+    return this.groupService.getGroupUsers(groupId);
   }
 
   @Get()
-  getGroups() {
-    return true; // this.groupService.getGroups();
+  getAllGroups() {
+    return this.groupService.getAllGroups();
   }
 
   @Patch(':groupId')
   updateGroup(
-    @Param('groupId') _groupId: string,
-    @Body() _updateGroupDto: UpdateGroupDto,
+    @Param('groupId') groupId: string,
+    @Body() updateGroupDto: UpdateGroupDto,
   ) {
-    return true; // this.groupService.updateGroup(groupId, updateGroupDto);
+    return this.groupService.updateGroup(groupId, updateGroupDto);
   }
 
   @Patch(':groupId/users/:userId/permissions')
   updateUserPermissions(
-    @Param('groupId') _groupId: string,
-    @Param('userId') _userId: string,
-    @Body() _permissionsDto: UpdateUserPermissionsDto,
+    @Param('groupId') groupId: string,
+    @Param('userId') userId: string,
+    @Body() updateUserPermissionsDto: UpdateUserPermissionsDto,
   ) {
-    return true; /* this.groupService.updateUserPermissions(
+    return this.groupService.updateUserPermissions(
       groupId,
       userId,
-      permissionsDto,
+      updateUserPermissionsDto,
     );
-    */
   }
 
   @Patch(':groupId/users/:userId/status')
   updateUserStatus(
-    @Param('groupId') _groupId: string,
-    @Param('userId') _userId: string,
-    @Body() _statusDto: UpdateUserStatusDto,
+    @Param('groupId') groupId: string,
+    @Param('userId') userId: string,
+    @Body() updateUserStatusDto: UpdateUserStatusDto,
   ) {
-    return true; // this.groupService.updateUserStatus(groupId, userId, statusDto);
+    return this.groupService.updateUserStatus(
+      groupId,
+      userId,
+      updateUserStatusDto,
+    );
   }
 
   @Delete(':groupId')
-  deleteGroup(@Param('groupId') _groupId: string) {
-    return true; // this.groupService.deleteGroup(groupId);
+  deleteGroup(@Param('groupId') groupId: string) {
+    return this.groupService.deleteGroup(groupId);
   }
 
   @Delete(':groupId/users/:userId')
   removeUserFromGroup(
-    @Param('groupId') _groupId: string,
-    @Param('userId') _userId: string,
+    @Param('groupId') groupId: string,
+    @Param('userId') userId: string,
   ) {
-    return true; // this.groupService.removeUserFromGroup(groupId, userId);
+    return this.groupService.removeUserFromGroup(groupId, userId);
   }
 }
