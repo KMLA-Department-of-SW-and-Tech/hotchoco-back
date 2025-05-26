@@ -4,7 +4,7 @@ const BoardSchema = z.object({
   id: z.string().uuid(), // Unique
   name: z.string().nonempty(),
   description: z.string().optional(),
-  parentId: z.lazy((): z.ZodString => BoardSchema.shape.id).nullable(),
+  createdAt: z.date().default(() => new Date()),
 });
 
 type Board = z.infer<typeof BoardSchema>;

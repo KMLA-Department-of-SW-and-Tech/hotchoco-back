@@ -11,6 +11,7 @@ export const PostSchema = z.object({
   images: z.array(z.string()), // Reference to image id
   files: z.array(z.string()), // Reference to file id
   createdAt: z.date().default(() => new Date()),
+  updatedAt: z.date().optional(),
   reactions: ReactionSchema,
 });
 

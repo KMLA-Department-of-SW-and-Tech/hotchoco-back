@@ -9,6 +9,7 @@ export const CommentSchema = z.object({
   author: z.string().nonempty(), // Reference to user uid. Anonymous user will have a unique id - Anonymous
   content: z.string().nonempty(),
   createdAt: z.date().default(() => new Date()),
+  updatedAt: z.date().optional(),
   reactions: ReactionSchema,
 });
 
