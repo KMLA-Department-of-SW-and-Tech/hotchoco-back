@@ -5,7 +5,7 @@ import { BoardSchema } from './board.schema';
 export const PostSchema = z.object({
   id: z.string().uuid(), // Unique
   boardId: BoardSchema.shape.id,
-  author: z.string().nonempty(), // Reference to user uid. Anonymous user will have a unique id - Anonymous
+  author: z.string().nonempty(), // Reference to user Firebase uid. Anonymous user will have a unique id - Anonymous
   title: z.string(), // if empty, it's a comment
   content: z.string().nonempty(),
   images: z.array(z.string()), // Reference to image id
